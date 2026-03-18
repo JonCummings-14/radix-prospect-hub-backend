@@ -8,9 +8,8 @@ const app = express();
 // Enable CORS for all routes
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
@@ -18,13 +17,10 @@ app.use(express.json());
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
-// Test endpoint
+// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', hasApiKey: !!ANTHROPIC_API_KEY });
 });
-
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
 async function searchZoomInfoContacts(companies, jobTitles) {
   const companyList = Array.isArray(companies) ? companies : [companies];
@@ -34,7 +30,7 @@ async function searchZoomInfoContacts(companies, jobTitles) {
 Companies: ${companyList.join(', ')}
 Job Titles: ${titleList.join(', ')}
 
-Return ONLY a JSON array of REAL contacts with this structure. No generic names:
+Return ONLY a JSON array of REAL contacts:
 [{
   "id": "zoominfo_id",
   "firstName": "first name",
@@ -47,7 +43,7 @@ Return ONLY a JSON array of REAL contacts with this structure. No generic names:
   "contactAccuracyScore": 90
 }]
 
-Only return JSON, nothing else.`;
+No generic names. Only return JSON.`;
 
   try {
     const response = await axios.post(ANTHROPIC_API_URL, {
@@ -99,10 +95,6 @@ app.post('/api/search-zoominfo', async (req, res) => {
     console.error('API error:', error);
     res.status(500).json({ error: 'Search failed', details: error.message });
   }
-});
-
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
 });
 
 const PORT = process.env.PORT || 3001;
