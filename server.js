@@ -4,8 +4,23 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+// CORS configuration - allow all origins for testing
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
+
 app.use(express.json());
+
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+
+// Test endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', hasApiKey: !!ANTHROPIC_API_KEY });
+});
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
