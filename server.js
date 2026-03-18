@@ -5,11 +5,12 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS configuration - allow all origins for testing
+// Enable CORS for all routes
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
 }));
 
 app.use(express.json());
