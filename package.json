@@ -1,0 +1,15 @@
+{
+  "name": "radix-prospect-hub-backend",
+  "version": "1.0.0",
+  "description": "Backend for ZoomInfo contact integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3"
+  }
+}
